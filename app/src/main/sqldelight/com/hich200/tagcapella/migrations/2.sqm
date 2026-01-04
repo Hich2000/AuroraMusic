@@ -1,1 +1,0 @@
-ALTER TABLE song ADD COLUMN last_modified INTEGER NOT NULL;

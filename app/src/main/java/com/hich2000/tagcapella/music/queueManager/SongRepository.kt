@@ -86,7 +86,7 @@ class SongRepository @Inject constructor(
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.RELATIVE_PATH,
                 MediaStore.Audio.Media.DATA,
-                MediaStore.Audio.Media.DATE_MODIFIED
+                MediaStore.Audio.Media.TITLE,
             )
             val selection =
                 "${MediaStore.Audio.Media.IS_MUSIC} != 0 AND ${MediaStore.Audio.Media.RELATIVE_PATH} IN ($placeholders)"
@@ -101,32 +101,35 @@ class SongRepository @Inject constructor(
 
             cursor?.use {
                 val pathColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
-                val lastModified =
-                    it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED).toLong()
+                val titleColumn =
+                    it.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
                 while (it.moveToNext()) {
                     //todo refactor SongDTO to use content uri instead of this DATA column. Better in the long term
                     val path = it.getString(pathColumn)
+                    val title = it.getString(titleColumn)
                     val songId = database.db.songQueries
-                        .checkSongExists(path)
+                        .checkSongExists(title)
                         .executeAsOneOrNull()
 
                     if (songId !== null) {
                         songList.add(
-                            database.db.songQueries.selectSong(songId) { id, path ->
+                            database.db.songQueries.selectSong(songId) { id, path, title ->
                                 Song(
                                     id = id,
                                     path = path,
+                                    title = title,
                                     tags = getSongTags(id)
                                 )
                             }.executeAsOne()
                         )
                     } else {
-                        database.db.songQueries.insertSong(path, lastModified)
+                        database.db.songQueries.insertSong(path, title)
                         val newId = database.db.songQueries.selectLastInsertId().executeAsOne()
                         songList.add(
                             Song(
                                 id = newId,
                                 path = path,
+                                title = title,
                                 tags = emptyList()
                             )
                         )
@@ -150,10 +153,11 @@ class SongRepository @Inject constructor(
         if (includeTags.isEmpty()) {
             filteredSongList.addAll(_songList.value)
         } else {
-            filteredSongList.addAll(database.db.songQueries.filterSongList(includeIds) { id, path ->
+            filteredSongList.addAll(database.db.songQueries.filterSongList(includeIds) { id, path, title ->
                 Song(
                     id = id,
                     path = path,
+                    title = title,
                     tags = emptyList()
                 )
             }.executeAsList())
