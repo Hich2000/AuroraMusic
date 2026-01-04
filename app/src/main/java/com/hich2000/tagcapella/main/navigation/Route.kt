@@ -14,9 +14,9 @@ sealed class Route(
     }
 
     data object Songs : Route(route = "library") {
-        data object Tags : Route(route = "${route}/song_tags/{songPath}") {
-            fun createRoute(songPath: String): String =
-                route.replace("{songPath}", Uri.encode(songPath))
+        data object Tags : Route(route = "${route}/song_tags/{songTitle}") {
+            fun createRoute(songTitle: String): String =
+                route.replace("{songTitle}", Uri.encode(songTitle))
         }
     }
 

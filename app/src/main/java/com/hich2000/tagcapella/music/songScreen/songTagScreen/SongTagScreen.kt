@@ -19,13 +19,13 @@ import com.hich2000.tagcapella.tagsAndCategories.tags.tagList.TagList
 
 @Composable
 fun SongTagScreen(
-    songPath: String,
+    songTitle: String,
     songTagScreenViewModel: SongTagScreenViewModel = hiltViewModel()
 ) {
     val tagList by songTagScreenViewModel.tags.collectAsState()
     val songList by songTagScreenViewModel.songs.collectAsState()
     val songToTag = songList.first {
-        it.path == songPath
+        it.title == songTitle
     }
 
     val onTagClick = { tag: Tag ->
