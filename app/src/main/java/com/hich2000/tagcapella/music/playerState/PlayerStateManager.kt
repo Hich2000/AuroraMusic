@@ -63,7 +63,7 @@ class PlayerStateManager @Inject constructor(
                 val controller = mediaController
                 if (controller.playbackState != Player.STATE_READY) return
                 _playerState.value = _playerState.value.copy(
-                    currentSong = mediaController.currentMediaItem?.mediaId ?: "",
+                    currentSong = mediaController.currentMediaItem?.mediaMetadata?.title.toString(),
                     position = mediaController.currentPosition,
                     duration = mediaController.duration,
                     isPlaying = isPlaying
@@ -103,7 +103,7 @@ class PlayerStateManager @Inject constructor(
                 }
                 if (mediaItem != null) {
                     _playerState.value = _playerState.value.copy(
-                        currentSong = mediaItem.mediaId
+                        currentSong = mediaItem.mediaMetadata.title.toString()
                     )
                     savePlayerState()
                 }

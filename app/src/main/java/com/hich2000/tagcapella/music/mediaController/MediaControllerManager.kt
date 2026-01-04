@@ -69,13 +69,13 @@ class MediaControllerManager @Inject constructor(
         })
     }
 
-    fun findMediaItemIndexById(mediaId: String): Int {
+    fun findMediaItemIndexById(mediaTitle: String): Int {
         if (_mediaController.value == null) {
             return -1
         }
 
         for (i: Int in 0 until _mediaController.value!!.mediaItemCount) {
-            if (_mediaController.value!!.getMediaItemAt(i).mediaId == mediaId) {
+            if (_mediaController.value!!.getMediaItemAt(i).mediaMetadata.title == mediaTitle) {
                 return i
             }
         }
