@@ -12,7 +12,6 @@ import com.hich2000.tagcapella.music.queueManager.Song
 import com.hich2000.tagcapella.music.playerState.PlayerState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -89,7 +88,7 @@ class MediaControllerManager @Inject constructor(
                 .setMediaId(it.path)
                 .setUri(it.path)
                 .setMediaMetadata(
-                    MediaMetadata.Builder().setTitle(File(it.path).nameWithoutExtension).build()
+                    MediaMetadata.Builder().setTitle(it.title).build()
                 )
                 .build()
         }
