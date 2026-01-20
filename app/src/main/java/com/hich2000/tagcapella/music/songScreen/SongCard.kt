@@ -23,8 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.hich2000.tagcapella.music.queueManager.Song
-import kotlin.io.path.Path
-import kotlin.io.path.nameWithoutExtension
 
 @Composable
 fun SongCard(
@@ -33,8 +31,6 @@ fun SongCard(
     onClick: () -> Unit = {},
     backgroundColor: Color = MaterialTheme.colorScheme.primary
 ) {
-    val songPath = Path(song.path)
-
     Card(
         modifier = Modifier
             .border(2.dp, MaterialTheme.colorScheme.tertiary, shape = RoundedCornerShape(8.dp))
@@ -59,7 +55,7 @@ fun SongCard(
                     .padding(0.dp)
             )
             Text(
-                songPath.nameWithoutExtension,
+                song.title,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .basicMarquee(

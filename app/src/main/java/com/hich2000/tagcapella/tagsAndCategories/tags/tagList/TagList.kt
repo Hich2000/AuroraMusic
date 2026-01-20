@@ -45,6 +45,9 @@ fun TagList(
             .verticalScroll(columnScroll)
     ) {
         if (categories.isNotEmpty()) {
+
+            val buttonHardWidth = if (categories.count() == 1) 180.dp else 120.dp
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -58,7 +61,7 @@ fun TagList(
                     modifier = Modifier
                         .border(2.dp, MaterialTheme.colorScheme.tertiary, RectangleShape)
                         .padding(0.dp)
-                        .width(120.dp),
+                        .width(buttonHardWidth),
                     shape = RectangleShape,
                 ) {
                     Text(
@@ -75,7 +78,7 @@ fun TagList(
                         .border(2.dp, MaterialTheme.colorScheme.tertiary, RectangleShape)
                         .padding(0.dp)
                     val finalModifier = if (category.category.length < 20) {
-                        buttonModifier.width(120.dp)
+                        buttonModifier.width(buttonHardWidth)
                     } else {
                         buttonModifier.wrapContentWidth()
                         buttonModifier.weight(1f)

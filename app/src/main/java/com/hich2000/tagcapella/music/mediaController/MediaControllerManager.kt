@@ -12,7 +12,6 @@ import com.hich2000.tagcapella.music.queueManager.Song
 import com.hich2000.tagcapella.music.playerState.PlayerState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -69,13 +68,13 @@ class MediaControllerManager @Inject constructor(
         })
     }
 
-    fun findMediaItemIndexById(mediaId: String): Int {
+    fun findMediaItemIndexById(mediaTitle: String): Int {
         if (_mediaController.value == null) {
             return -1
         }
 
         for (i: Int in 0 until _mediaController.value!!.mediaItemCount) {
-            if (_mediaController.value!!.getMediaItemAt(i).mediaId == mediaId) {
+            if (_mediaController.value!!.getMediaItemAt(i).mediaMetadata.title == mediaTitle) {
                 return i
             }
         }
@@ -89,7 +88,7 @@ class MediaControllerManager @Inject constructor(
                 .setMediaId(it.path)
                 .setUri(it.path)
                 .setMediaMetadata(
-                    MediaMetadata.Builder().setTitle(File(it.path).nameWithoutExtension).build()
+                    MediaMetadata.Builder().setTitle(it.title).build()
                 )
                 .build()
         }

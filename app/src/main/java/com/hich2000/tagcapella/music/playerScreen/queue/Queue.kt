@@ -71,7 +71,7 @@ fun Queue(
             songList = queue,
             modifier = Modifier.padding(innerPadding)
         ) { song ->
-            if (playerState.currentSong == song.path) {
+            if (playerState.currentSong == song.title) {
                 Box(
                     contentAlignment = Alignment.Center,
                 ) {

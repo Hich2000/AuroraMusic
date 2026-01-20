@@ -98,7 +98,7 @@ fun PlayerScreen(
                 )
             }
             Text(
-                text = playerState.currentSong.substringAfterLast('/'),
+                text = playerState.currentSong,
                 textAlign = TextAlign.Center,
                 softWrap = false,
                 modifier = Modifier

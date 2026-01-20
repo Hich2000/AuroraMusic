@@ -81,12 +81,12 @@ class SongRepository @Inject constructor(
             val songList = mutableListOf<Song>()
             val placeholders = foldersToScan.joinToString(", ") { "?" }
 
-
             val collection = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             val projection = arrayOf(
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.RELATIVE_PATH,
                 MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.TITLE,
             )
             val selection =
                 "${MediaStore.Audio.Media.IS_MUSIC} != 0 AND ${MediaStore.Audio.Media.RELATIVE_PATH} IN ($placeholders)"
@@ -99,18 +99,41 @@ class SongRepository @Inject constructor(
                 sortOrder
             )
 
-
             cursor?.use {
                 val pathColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+                val titleColumn =
+                    it.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
                 while (it.moveToNext()) {
                     //todo refactor SongDTO to use content uri instead of this DATA column. Better in the long term
                     val path = it.getString(pathColumn)
-                    songList.add(
-                        Song(
-                            path = path,
-                            tags = getSongTags(it.getString(pathColumn))
+                    val title = it.getString(titleColumn)
+                    val songId = database.db.songQueries
+                        .checkSongExists(title)
+                        .executeAsOneOrNull()
+
+                    if (songId !== null) {
+                        songList.add(
+                            database.db.songQueries.selectSong(songId) { id, path, title ->
+                                Song(
+                                    id = id,
+                                    path = path,
+                                    title = title,
+                                    tags = getSongTags(id)
+                                )
+                            }.executeAsOne()
                         )
-                    )
+                    } else {
+                        database.db.songQueries.insertSong(path, title)
+                        val newId = database.db.songQueries.selectLastInsertId().executeAsOne()
+                        songList.add(
+                            Song(
+                                id = newId,
+                                path = path,
+                                title = title,
+                                tags = emptyList()
+                            )
+                        )
+                    }
                 }
             }
 
@@ -130,9 +153,11 @@ class SongRepository @Inject constructor(
         if (includeTags.isEmpty()) {
             filteredSongList.addAll(_songList.value)
         } else {
-            filteredSongList.addAll(database.db.songQueries.filterSongList(includeIds) { _, path ->
+            filteredSongList.addAll(database.db.songQueries.filterSongList(includeIds) { id, path, title ->
                 Song(
+                    id = id,
                     path = path,
+                    title = title,
                     tags = emptyList()
                 )
             }.executeAsList())
@@ -141,7 +166,7 @@ class SongRepository @Inject constructor(
         //now we remove the excluded tags and songs who's path does not exist anymore
         filteredSongList.removeAll { song ->
             val excludedIds = excludeTags.map { it.id }
-            val tagIds = getSongTags(song.path).map { it.id }
+            val tagIds = getSongTags(song.id).map { it.id }
             tagIds.any { it in excludedIds } or !File(song.path).exists()
         }
 
@@ -150,17 +175,17 @@ class SongRepository @Inject constructor(
 
     fun addSongTag(song: Song, tag: Tag) {
         if (song.tags.contains(tag)) return
-        database.db.songQueries.addSongTag(song.path, tag.id)
+        database.db.songQueries.addSongTag(song.id, tag.id)
         updateSongInList(song)
     }
 
     fun deleteSongTag(song: Song, tag: Tag) {
-        database.db.songQueries.deleteSongTag(song.path, tag.id)
+        database.db.songQueries.deleteSongTag(song.id, tag.id)
         updateSongInList(song)
     }
 
-    fun getSongTags(songPath: String): List<Tag> {
-        val tags = database.db.songQueries.selectSongTags(songPath) { id, tag, category ->
+    fun getSongTags(songId: Long): List<Tag> {
+        val tags = database.db.songQueries.selectSongTags(songId) { id, tag, category ->
             Tag(id, tag, category)
         }.executeAsList()
 
@@ -168,9 +193,9 @@ class SongRepository @Inject constructor(
     }
 
     private fun updateSongInList(song: Song) {
-        val updatedTags = getSongTags(song.path)
+        val updatedTags = getSongTags(song.id)
         val updatedList = _songList.value.map {
-            if (it.path == song.path) {
+            if (it.id == song.id) {
                 it.copy(tags = updatedTags)
             } else {
                 it

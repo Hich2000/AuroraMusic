@@ -79,11 +79,11 @@ fun TagcapellaApp() {
             composable(
                 route = Route.Songs.Tags.route,
                 arguments = listOf(
-                    navArgument("songPath") { type = NavType.StringType }
+                    navArgument("songTitle") { type = NavType.StringType }
                 )
             ) { backStackEntry ->
-                val songPath = backStackEntry.arguments?.getString("songPath") ?: ""
-                SongTagScreen(songPath)
+                val songTitle = backStackEntry.arguments?.getString("songTitle") ?: ""
+                SongTagScreen(songTitle)
             }
             composable(
                 route = Route.Tags.Songs.route,
