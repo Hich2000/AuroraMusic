@@ -52,6 +52,7 @@ class SongRepository @Inject constructor(
             observerStarted = true
             observeFolderListChange()
         }
+        _isInitialized.value = true
     }
 
     fun observeFolderListChange() {
@@ -71,7 +72,6 @@ class SongRepository @Inject constructor(
         val scannedSongs: MutableList<Song> =
             scanMusicFolder(foldersToScan.value)
         setSongList(scannedSongs)
-        _isInitialized.value = true
     }
 
     // Suspend function to fetch the list of songs from the directory asynchronously
