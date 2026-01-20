@@ -25,7 +25,7 @@ class SongRepository @Inject constructor(
     @ApplicationContext val context: Context
 ) {
     // Define a CoroutineScope for the repository
-    private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private val foldersToScan: StateFlow<List<String>> get() = folderScanManager.foldersToScan
 
@@ -110,6 +110,7 @@ class SongRepository @Inject constructor(
                     val songId = database.db.songQueries
                         .checkSongExists(title)
                         .executeAsOneOrNull()
+
 
                     if (songId !== null) {
                         songList.add(
