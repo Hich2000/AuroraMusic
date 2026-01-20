@@ -25,7 +25,7 @@ class SongRepository @Inject constructor(
     @ApplicationContext val context: Context
 ) {
     // Define a CoroutineScope for the repository
-    private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val repositoryScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     private val foldersToScan: StateFlow<List<String>> get() = folderScanManager.foldersToScan
 
@@ -52,6 +52,7 @@ class SongRepository @Inject constructor(
             observerStarted = true
             observeFolderListChange()
         }
+        _isInitialized.value = true
     }
 
     fun observeFolderListChange() {
@@ -71,7 +72,6 @@ class SongRepository @Inject constructor(
         val scannedSongs: MutableList<Song> =
             scanMusicFolder(foldersToScan.value)
         setSongList(scannedSongs)
-        _isInitialized.value = true
     }
 
     // Suspend function to fetch the list of songs from the directory asynchronously
@@ -110,6 +110,7 @@ class SongRepository @Inject constructor(
                     val songId = database.db.songQueries
                         .checkSongExists(title)
                         .executeAsOneOrNull()
+
 
                     if (songId !== null) {
                         songList.add(
