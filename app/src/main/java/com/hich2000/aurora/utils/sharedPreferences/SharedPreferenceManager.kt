@@ -16,7 +16,7 @@ class SharedPreferenceManager @Inject constructor(
     private val gson = Gson()
 
     private val sharedPreferences = application.getSharedPreferences(
-        "com.hich2000.tagcapella.application_preferences",
+        "com.hich2000.aurora.application_preferences",
         Context.MODE_PRIVATE
     )
 

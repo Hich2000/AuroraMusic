@@ -9,7 +9,7 @@ plugins {
 sqldelight {
     databases {
         create("AuroraMusicDb") {
-            packageName.set("com.hich200.aurora")
+            packageName.set("com.hich2000.aurora")
         }
     }
 }

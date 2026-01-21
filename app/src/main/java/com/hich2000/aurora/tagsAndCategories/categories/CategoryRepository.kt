@@ -1,6 +1,6 @@
 package com.hich2000.aurora.tagsAndCategories.categories
 
-import com.hich200.aurora.AuroraMusicDb
+import com.hich2000.aurora.AuroraMusicDb
 import com.hich2000.aurora.utils.Database
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

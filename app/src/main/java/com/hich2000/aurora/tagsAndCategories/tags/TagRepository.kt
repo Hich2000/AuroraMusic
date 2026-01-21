@@ -1,7 +1,7 @@
 package com.hich2000.aurora.tagsAndCategories.tags
 
 import androidx.compose.runtime.toMutableStateList
-import com.hich200.aurora.AuroraMusicDb
+import com.hich2000.aurora.AuroraMusicDb
 import com.hich2000.aurora.music.queueManager.Song
 import com.hich2000.aurora.utils.Database
 import kotlinx.coroutines.CoroutineScope
