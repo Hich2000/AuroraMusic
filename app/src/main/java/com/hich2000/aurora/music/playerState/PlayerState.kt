@@ -1,0 +1,24 @@
+package com.hich2000.aurora.music.playerState
+
+data class PlayerState(
+    val currentSong: String,
+    val isPlaying: Boolean,
+    val shuffleModeEnabled: Boolean,
+    val repeatMode: Int,
+    var position: Long,
+    val duration: Long,
+) {
+
+    companion object {
+        fun emptyPlayerState(): PlayerState {
+            return PlayerState(
+                currentSong = "",
+                isPlaying = false,
+                shuffleModeEnabled = false,
+                repeatMode = 1,
+                position = 0L,
+                duration = 0L
+            )
+        }
+    }
+}

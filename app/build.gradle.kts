@@ -8,18 +8,18 @@ plugins {
 
 sqldelight {
     databases {
-        create("TagcapellaDb") {
-            packageName.set("com.hich200.tagcapella")
+        create("AuroraMusicDb") {
+            packageName.set("com.hich2000.aurora")
         }
     }
 }
 
 android {
-    namespace = "com.hich2000.tagcapella"
+    namespace = "com.hich2000.aurora"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.hich2000.tagcapella"
+        applicationId = "com.hich2000.aurora"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

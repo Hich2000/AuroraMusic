@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Tagcapella"
+rootProject.name = "Aurora"
 include(":app")
  
