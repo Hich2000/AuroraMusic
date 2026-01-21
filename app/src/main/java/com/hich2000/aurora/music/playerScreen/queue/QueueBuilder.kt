@@ -21,7 +21,7 @@ import com.hich2000.aurora.main.navigation.LocalNavController
 import com.hich2000.aurora.main.navigation.TopBar
 import com.hich2000.aurora.tagsAndCategories.tags.tagList.TagCard
 import com.hich2000.aurora.tagsAndCategories.tags.tagList.TagList
-import com.hich2000.aurora.utils.composables.TagCapellaButton
+import com.hich2000.aurora.utils.composables.AuroraButton
 
 @Composable
 fun QueueBuilder(
@@ -60,7 +60,7 @@ fun QueueBuilder(
                 },
             )
 
-            TagCapellaButton(
+            AuroraButton(
                 onClick = {
                     queueBuilderViewModel.updateQueue()
                     navController.popBackStack()

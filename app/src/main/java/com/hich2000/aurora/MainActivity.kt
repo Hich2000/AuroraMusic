@@ -35,14 +35,14 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.hich2000.aurora.main.TagcapellaApp
+import com.hich2000.aurora.main.AuroraApp
 import com.hich2000.aurora.music.mediaController.MediaPlayerCoordinator
 import com.hich2000.aurora.music.queueManager.FolderScanManager
 import com.hich2000.aurora.music.queueManager.QueueManager
 import com.hich2000.aurora.music.queueManager.SongRepository
-import com.hich2000.aurora.theme.TagcapellaTheme
+import com.hich2000.aurora.theme.AuroraTheme
 import com.hich2000.aurora.utils.LifeCycleManager
-import com.hich2000.aurora.utils.composables.TagCapellaButton
+import com.hich2000.aurora.utils.composables.AuroraButton
 import com.hich2000.aurora.utils.sharedPreferences.SharedPreferenceKey
 import com.hich2000.aurora.utils.sharedPreferences.SharedPreferenceManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -99,13 +99,13 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            TagcapellaTheme {
+            AuroraTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Surface(
                         modifier = Modifier.padding(innerPadding)
                     ) {
                         if (mediaPermissionGranted.intValue == PackageManager.PERMISSION_GRANTED) {
-                            TagcapellaApp()
+                            AuroraApp()
                         } else {
                             RequestPermissionScreen()
                         }
@@ -204,7 +204,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
-                TagCapellaButton(
+                AuroraButton(
                     onClick = {
                         if (!permissionAlreadyRequested) {
                             permissionLauncher.launch(permission)

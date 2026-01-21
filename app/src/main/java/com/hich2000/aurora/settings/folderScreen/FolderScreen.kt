@@ -32,7 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.hich2000.aurora.main.navigation.TopBar
-import com.hich2000.aurora.utils.composables.TagCapellaButton
+import com.hich2000.aurora.utils.composables.AuroraButton
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -107,7 +107,7 @@ fun FolderScreen(
                         .padding(8.dp)
                 )
 
-                TagCapellaButton(
+                AuroraButton(
                     onClick = {
                         launcher.launch(null)
                     },

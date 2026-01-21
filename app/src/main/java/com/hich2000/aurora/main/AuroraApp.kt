@@ -22,7 +22,7 @@ import com.hich2000.aurora.tagsAndCategories.tags.tagScreen.TagSongScreen
 import com.hich2000.aurora.utils.ToastEventBus
 
 @Composable
-fun TagcapellaApp() {
+fun AuroraApp() {
     val rootNavController = rememberNavController()
     val context = LocalContext.current
     val slideSpeed = 250

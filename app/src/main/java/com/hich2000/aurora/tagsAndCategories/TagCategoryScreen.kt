@@ -28,7 +28,7 @@ import com.hich2000.aurora.tagsAndCategories.categories.forms.CategoryForm
 import com.hich2000.aurora.tagsAndCategories.tags.forms.TagForm
 import com.hich2000.aurora.tagsAndCategories.tags.tagScreen.TagScreen
 import com.hich2000.aurora.utils.composables.ExpandableFab
-import com.hich2000.aurora.utils.composables.TagCapellaButton
+import com.hich2000.aurora.utils.composables.AuroraButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -78,7 +78,7 @@ fun TagCategoryScreen() {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                TagCapellaButton(
+                AuroraButton(
                     onClick = {
                         selectedScreen.intValue = 0
                     },
@@ -91,7 +91,7 @@ fun TagCategoryScreen() {
                         "Tags"
                     )
                 }
-                TagCapellaButton(
+                AuroraButton(
                     onClick = {
                         selectedScreen.intValue = 1
                     },
@@ -111,7 +111,7 @@ fun TagCategoryScreen() {
                 floatingActionButton = {
                     ExpandableFab(
                         buttons = listOf {
-                            TagCapellaButton(
+                            AuroraButton(
                                 onClick = {
                                     showTagDialog.value = true
                                 },
@@ -121,7 +121,7 @@ fun TagCategoryScreen() {
                             ) {
                                 Text("New Tag")
                             }
-                            TagCapellaButton(
+                            AuroraButton(
                                 onClick = {
                                     showCategoryDialog.value = true
                                 },

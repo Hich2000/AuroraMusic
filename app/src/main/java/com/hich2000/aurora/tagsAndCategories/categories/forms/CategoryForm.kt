@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.hich2000.aurora.tagsAndCategories.categories.Category
 import com.hich2000.aurora.tagsAndCategories.categories.categoryScreen.CategoryScreenViewModel
-import com.hich2000.aurora.utils.composables.TagCapellaButton
+import com.hich2000.aurora.utils.composables.AuroraButton
 
 @Composable
 fun CategoryForm(
@@ -58,7 +58,7 @@ fun CategoryForm(
                 modifier = Modifier.padding(0.dp)
             ) {
                 if (category === null) {
-                    TagCapellaButton(
+                    AuroraButton(
                         onClick = {
                             categoryScreenViewModel.insertCategory(textState)
                         },
@@ -72,7 +72,7 @@ fun CategoryForm(
                         Text("add")
                     }
                 } else {
-                    TagCapellaButton(
+                    AuroraButton(
                         onClick = {
                             categoryScreenViewModel.updateCategory(
                                 id = category.id,

@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.hich2000.aurora.tagsAndCategories.tags.Tag
-import com.hich2000.aurora.utils.composables.TagCapellaButton
+import com.hich2000.aurora.utils.composables.AuroraButton
 
 @Composable
 fun TagList(
@@ -54,7 +54,7 @@ fun TagList(
                     .fillMaxWidth()
                     .horizontalScroll(scroll)
             ) {
-                TagCapellaButton(
+                AuroraButton(
                     onClick = {
                         tagListViewModel.setSelectedCategory(null)
                     },
@@ -84,7 +84,7 @@ fun TagList(
                         buttonModifier.weight(1f)
                     }
 
-                    TagCapellaButton(
+                    AuroraButton(
                         onClick = {
                             tagListViewModel.setSelectedCategory(category.id)
                         },

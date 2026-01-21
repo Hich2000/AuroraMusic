@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.hich2000.aurora.tagsAndCategories.tags.Tag
-import com.hich2000.aurora.utils.composables.TagCapellaButton
+import com.hich2000.aurora.utils.composables.AuroraButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -165,7 +165,7 @@ fun TagForm(
             modifier = Modifier.padding(0.dp)
         ) {
             if (tag === null) {
-                TagCapellaButton(
+                AuroraButton(
                     onClick = {
                         tagFormViewModel.insertTag()
                         onSaveAction()
@@ -180,7 +180,7 @@ fun TagForm(
                     Text("add")
                 }
             } else {
-                TagCapellaButton(
+                AuroraButton(
                     onClick = {
                         tagFormViewModel.updateTag(tag.id)
                         onSaveAction()

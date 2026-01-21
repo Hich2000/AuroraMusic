@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hich2000.aurora.main.navigation.LocalNavController
 import com.hich2000.aurora.main.navigation.Route
-import com.hich2000.aurora.utils.composables.TagCapellaButton
+import com.hich2000.aurora.utils.composables.AuroraButton
 
 @Composable
 fun SettingsScreen() {
@@ -20,7 +20,7 @@ fun SettingsScreen() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        TagCapellaButton(
+        AuroraButton(
             onClick = {
                 //now I can use the navController like this
                 navController.navigate(Route.Settings.Folders.route)
@@ -31,7 +31,7 @@ fun SettingsScreen() {
         ) {
             Text("Music folders")
         }
-        TagCapellaButton(
+        AuroraButton(
             onClick = {
                 //now I can use the navController like this
                 navController.navigate(Route.Settings.Themes.route)

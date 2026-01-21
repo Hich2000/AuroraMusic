@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TagCapellaButton(
+fun AuroraButton(
     onClick: () -> Unit,
     modifier: Modifier,
     shape: Shape = CutCornerShape(
