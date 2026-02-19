@@ -23,6 +23,17 @@ fun SettingsScreen() {
         AuroraButton(
             onClick = {
                 //now I can use the navController like this
+                navController.navigate(Route.Settings.General.route)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(2.dp, MaterialTheme.colorScheme.tertiary)
+        ) {
+            Text("General")
+        }
+        AuroraButton(
+            onClick = {
+                //now I can use the navController like this
                 navController.navigate(Route.Settings.Folders.route)
             },
             modifier = Modifier

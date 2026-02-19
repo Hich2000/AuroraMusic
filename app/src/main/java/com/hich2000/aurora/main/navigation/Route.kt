@@ -27,6 +27,7 @@ sealed class Route(
     }
 
     data object Settings : Route(route = "settings") {
+        data object General : Route(route = "${route}/general")
         data object Folders : Route(route = "${route}/folders")
         data object Themes : Route(route = "${route}/themes")
     }
