@@ -1,5 +1,6 @@
 package com.hich2000.aurora.music.playerScreen
 
+import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,6 +25,7 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -85,7 +87,11 @@ fun PlayerScreen(
                 ),
             verticalArrangement = Arrangement.Center
         ) {
-            val albumArt = playerScreenViewModel.getAlbumArt()
+            var albumArt by remember { mutableStateOf<Bitmap?>(null) }
+            LaunchedEffect(playerState) {
+                albumArt = playerScreenViewModel.getAlbumArt()
+            }
+
             if (albumArt == null || !showAlbumArt) {
                 IconButton(
                     onClick = {},
@@ -104,7 +110,7 @@ fun PlayerScreen(
                 }
             } else {
                 Image(
-                    bitmap = albumArt.asImageBitmap(),
+                    bitmap = albumArt!!.asImageBitmap(),
                     contentDescription = "Album Art",
                     modifier = Modifier
                         .fillMaxWidth()

@@ -11,6 +11,7 @@ import com.hich2000.aurora.utils.applicationScope.ApplicationScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -27,6 +28,9 @@ class MediaPlayerCoordinator @Inject constructor(
     @ApplicationScope private val applicationScope: CoroutineScope
 ) {
 
+    private val _queueInit: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val queueInit: StateFlow<Boolean> get() = _queueInit
+
     val mediaControllerInit: StateFlow<Boolean> get() = mediaControllerManager.isMediaControllerInitialized
     val mediaController: StateFlow<MediaController?> get() = mediaControllerManager.mediaController
     val currentQueue: StateFlow<List<Song>> get() = queueManager.currentQueue
@@ -42,7 +46,7 @@ class MediaPlayerCoordinator @Inject constructor(
         applicationScope.launch {
             playerStateManager.initPlayerState()
             mediaControllerManager.initialize()
-            mediaControllerInit.first()
+            mediaControllerInit.first { it }
             playerStateManager.attachListener(mediaController.value)
             mediaController.value?.let { mediaOutputChangeReceiver.setGettingNoisyReceiver(it) }
 
@@ -51,6 +55,7 @@ class MediaPlayerCoordinator @Inject constructor(
                 mediaControllerManager.setQueue(currentQueue.value)
                 mediaControllerManager.setPlayerState(playerState.value)
                 mediaControllerManager.prepare()
+                _queueInit.value = true
                 //get the duration and position of the current song every second
                 //todo this is hella scuffed, should improve this with proper listener usage to poll position
                 var x = 0

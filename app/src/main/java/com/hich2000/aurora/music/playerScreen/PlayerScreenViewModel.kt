@@ -9,6 +9,7 @@ import com.hich2000.aurora.music.playerState.PlayerState
 import com.hich2000.aurora.settings.generalScreen.GeneralSettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +20,7 @@ class PlayerScreenViewModel @Inject constructor(
 
     val playerState: StateFlow<PlayerState> get() = mediaPlayerCoordinator.playerState
     val showAlbumArt: StateFlow<Boolean> get() = generalSettingsState.showAlbumArt
+    val queueInit: StateFlow<Boolean> get() = mediaPlayerCoordinator.queueInit
 
     fun pausePlay() {
         if (playerState.value.isPlaying) {
@@ -34,7 +36,10 @@ class PlayerScreenViewModel @Inject constructor(
     fun loopMode() = mediaPlayerCoordinator.loopMode()
     fun seek(position: Long) = mediaPlayerCoordinator.seek(position)
 
-    fun getAlbumArt(): Bitmap? {
+    suspend fun getAlbumArt(): Bitmap? {
+        if (!queueInit.value) {
+            queueInit.first { it }
+        }
         val currentSongPath = mediaPlayerCoordinator.currentQueue.value.find { song ->
             song.title == playerState.value.currentSong
         }?.path
