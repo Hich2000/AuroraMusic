@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -53,10 +52,8 @@ fun ThemesScreen(
                     textAlign = TextAlign.Center,
                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .weight(0.8f)
-                        //idk, but centervertically on the row is not doing anything here.
-                        .padding(12.dp)
                 )
                 AuroraCheckbox(
                     checked = useSystemTheme,
