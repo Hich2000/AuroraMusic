@@ -6,16 +6,19 @@ import android.media.MediaMetadataRetriever
 import androidx.lifecycle.ViewModel
 import com.hich2000.aurora.music.mediaController.MediaPlayerCoordinator
 import com.hich2000.aurora.music.playerState.PlayerState
+import com.hich2000.aurora.settings.generalScreen.GeneralSettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class PlayerScreenViewModel @Inject constructor(
-    private val mediaPlayerCoordinator: MediaPlayerCoordinator
+    private val mediaPlayerCoordinator: MediaPlayerCoordinator,
+    private val generalSettingsState: GeneralSettingsState
 ) : ViewModel() {
 
     val playerState: StateFlow<PlayerState> get() = mediaPlayerCoordinator.playerState
+    val showAlbumArt: StateFlow<Boolean> get() = generalSettingsState.showAlbumArtPlayerScreen
 
     fun pausePlay() {
         if (playerState.value.isPlaying) {

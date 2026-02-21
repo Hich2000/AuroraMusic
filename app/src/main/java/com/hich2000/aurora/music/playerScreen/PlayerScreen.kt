@@ -50,6 +50,7 @@ fun PlayerScreen(
 ) {
     val navController = LocalNavController.current
     val playerState by playerScreenViewModel.playerState.collectAsState()
+    val showAlbumArt by playerScreenViewModel.showAlbumArt.collectAsState()
     var isUserInteracting by remember { mutableStateOf(false) }
     var tempSliderPosition by remember { mutableFloatStateOf(0F) }
     val bottomSheetState = rememberBottomSheetScaffoldState()
@@ -85,7 +86,7 @@ fun PlayerScreen(
             verticalArrangement = Arrangement.Center
         ) {
             val albumArt = playerScreenViewModel.getAlbumArt()
-            if (albumArt == null) {
+            if (albumArt == null || !showAlbumArt) {
                 IconButton(
                     onClick = {},
                     enabled = false,
@@ -108,7 +109,6 @@ fun PlayerScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.6f)
-//                        .background(MaterialTheme.colorScheme.tertiary)
                 )
             }
             Text(
