@@ -15,4 +15,8 @@ class GeneralScreenViewModel @Inject constructor(
     fun handleShowAlbumArtPlayerScreenCheckbox() {
         generalSettingsState.setShowAlbumArtPlayerScreen(!showAlbumArtPlayerScreen.value)
     }
+
+    fun handleShowAlbumArtNotificationCheckbox() {
+        generalSettingsState.setShowAlbumArtNotification(!showAlbumArtNotification.value)
+    }
 }

@@ -56,5 +56,32 @@ fun GeneralScreen(
                 )
             }
         }
+
+        SettingsCard(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.primary)
+                .fillMaxWidth()
+                .height(50.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Show album art on android notification",
+                    textAlign = TextAlign.Center,
+                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(0.8f)
+                )
+                AuroraCheckbox(
+                    checked = showAlbumArtNotification,
+                    onCheckedChange = {
+                        generalScreenViewModel.handleShowAlbumArtNotificationCheckbox()
+                    },
+                    modifier = Modifier.weight(0.2f)
+                )
+            }
+        }
     }
 }
