@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.hich2000.aurora.main.navigation.TopBar
+import com.hich2000.aurora.settings.composables.SettingsCard
 import com.hich2000.aurora.theme.DarkColorScheme
 import com.hich2000.aurora.theme.LightColorScheme
 
@@ -56,13 +57,7 @@ fun ThemesScreen(
                     .fillMaxSize()
                     .padding(16.dp)
             ) {
-                Card(
-                    shape = CutCornerShape(
-                        topStart = cutCornerRadius,
-                        topEnd = cutCornerRadius,
-                        bottomStart = cutCornerRadius,
-                        bottomEnd = cutCornerRadius
-                    ),
+                SettingsCard(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.primary)
                         .fillMaxWidth()

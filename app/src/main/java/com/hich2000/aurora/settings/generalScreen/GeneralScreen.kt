@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CutCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.MaterialTheme
@@ -25,12 +23,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.hich2000.aurora.main.navigation.TopBar
+import com.hich2000.aurora.settings.composables.SettingsCard
 
 @Composable
 fun GeneralScreen(
     generalScreenViewModel: GeneralScreenViewModel = hiltViewModel()
 ) {
-    val cutCornerRadius = 8.dp
     val showAlbumArtPlayerScreen by generalScreenViewModel.showAlbumArtPlayerScreen.collectAsState()
     val showAlbumArtNotification by generalScreenViewModel.showAlbumArtNotification.collectAsState()
 
@@ -51,13 +49,7 @@ fun GeneralScreen(
                     .fillMaxSize()
                     .padding(16.dp)
             ) {
-                Card(
-                    shape = CutCornerShape(
-                        topStart = cutCornerRadius,
-                        topEnd = cutCornerRadius,
-                        bottomStart = cutCornerRadius,
-                        bottomEnd = cutCornerRadius
-                    ),
+                SettingsCard(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.primary)
                         .fillMaxWidth()
