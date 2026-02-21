@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.hich2000.aurora.main.navigation.TopBar
 import com.hich2000.aurora.settings.composables.SettingsCard
+import com.hich2000.aurora.settings.composables.SettingsScreenScaffold
 import com.hich2000.aurora.theme.DarkColorScheme
 import com.hich2000.aurora.theme.LightColorScheme
 import com.hich2000.aurora.utils.composables.AuroraCheckbox
@@ -36,118 +35,102 @@ fun ThemesScreen(
     val useSystemTheme by themesScreenViewModel.useSystemTheme.collectAsState()
     val selectedTheme by themesScreenViewModel.selectedTheme.collectAsState()
 
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize(),
-        topBar = { TopBar(topText = "Settings/Themes") }
-    ) { innerPadding ->
-        Box(
-            contentAlignment = Alignment.Center,
+    SettingsScreenScaffold(
+        topBarText = "Settings/Themes",
+        columnArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        SettingsCard(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+                .background(MaterialTheme.colorScheme.primary)
+                .fillMaxWidth()
+                .height(50.dp)
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                SettingsCard(
+                Text(
+                    text = "Match app colors to device settings.",
+                    textAlign = TextAlign.Center,
+                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
                     modifier = Modifier
-                        .background(MaterialTheme.colorScheme.primary)
-                        .fillMaxWidth()
-                        .height(50.dp)
+                        .fillMaxSize()
+                        .weight(0.8f)
+                        //idk, but centervertically on the row is not doing anything here.
+                        .padding(12.dp)
+                )
+                AuroraCheckbox(
+                    checked = useSystemTheme,
+                    onCheckedChange = {
+                        themesScreenViewModel.handleUseSystemThemeCheckbox()
+                    },
+                    modifier = Modifier.weight(0.2f)
+                )
+            }
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            SettingsCard(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primary)
+                    .weight(0.5f)
+                    .height(200.dp)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Match app colors to device settings.",
-                            textAlign = TextAlign.Center,
-                            fontSize = MaterialTheme.typography.labelLarge.fontSize,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .weight(0.8f)
-                                //idk, but centervertically on the row is not doing anything here.
-                                .padding(12.dp)
-                        )
-                        AuroraCheckbox(
-                            checked = useSystemTheme,
-                            onCheckedChange = {
-                                themesScreenViewModel.handleUseSystemThemeCheckbox()
-                            },
-                            modifier = Modifier.weight(0.2f)
-                        )
-                    }
+                    Box(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .background(
+                                color = LightColorScheme.primary,
+                                shape = CircleShape
+                            )
+                    )
+                    Text("Light mode")
+                    RadioButton(
+                        selected = selectedTheme == SelectableThemes.LIGHTMODE,
+                        onClick = {
+                            themesScreenViewModel.setSelectedTheme(SelectableThemes.LIGHTMODE)
+                        },
+                        enabled = !useSystemTheme
+                    )
                 }
+            }
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
+            SettingsCard(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primary)
+                    .weight(0.5f)
+                    .height(200.dp)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    SettingsCard (
+                    Box(
                         modifier = Modifier
-                            .background(MaterialTheme.colorScheme.primary)
-                            .weight(0.5f)
-                            .height(200.dp)
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(50.dp)
-                                    .background(
-                                        color = LightColorScheme.primary,
-                                        shape = CircleShape
-                                    )
+                            .size(50.dp)
+                            .background(
+                                color = DarkColorScheme.primary,
+                                shape = CircleShape
                             )
-                            Text("Light mode")
-                            RadioButton(
-                                selected = selectedTheme == SelectableThemes.LIGHTMODE,
-                                onClick = {
-                                    themesScreenViewModel.setSelectedTheme(SelectableThemes.LIGHTMODE)
-                                },
-                                enabled = !useSystemTheme
-                            )
-                        }
-                    }
-
-                    SettingsCard(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.primary)
-                            .weight(0.5f)
-                            .height(200.dp)
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(50.dp)
-                                    .background(
-                                        color = DarkColorScheme.primary,
-                                        shape = CircleShape
-                                    )
-                            )
-                            Text("Dark mode")
-                            RadioButton(
-                                selected = selectedTheme == SelectableThemes.DARKMODE,
-                                onClick = {
-                                    themesScreenViewModel.setSelectedTheme(SelectableThemes.DARKMODE)
-                                },
-                                enabled = !useSystemTheme
-                            )
-                        }
-                    }
+                    )
+                    Text("Dark mode")
+                    RadioButton(
+                        selected = selectedTheme == SelectableThemes.DARKMODE,
+                        onClick = {
+                            themesScreenViewModel.setSelectedTheme(SelectableThemes.DARKMODE)
+                        },
+                        enabled = !useSystemTheme
+                    )
                 }
-
             }
         }
     }
