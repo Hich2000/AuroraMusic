@@ -39,7 +39,7 @@ fun ThemesScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
-        topBar = { TopBar(topText = "Settings/Folders") }
+        topBar = { TopBar(topText = "Settings/Themes") }
     ) { innerPadding ->
         Box(
             contentAlignment = Alignment.Center,
