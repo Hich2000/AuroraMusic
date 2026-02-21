@@ -11,10 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CutCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -31,12 +27,12 @@ import com.hich2000.aurora.main.navigation.TopBar
 import com.hich2000.aurora.settings.composables.SettingsCard
 import com.hich2000.aurora.theme.DarkColorScheme
 import com.hich2000.aurora.theme.LightColorScheme
+import com.hich2000.aurora.utils.composables.AuroraCheckbox
 
 @Composable
 fun ThemesScreen(
     themesScreenViewModel: ThemesScreenViewModel = hiltViewModel()
 ) {
-    val cutCornerRadius = 8.dp
     val useSystemTheme by themesScreenViewModel.useSystemTheme.collectAsState()
     val selectedTheme by themesScreenViewModel.selectedTheme.collectAsState()
 
@@ -76,35 +72,11 @@ fun ThemesScreen(
                                 //idk, but centervertically on the row is not doing anything here.
                                 .padding(12.dp)
                         )
-                        Checkbox(
+                        AuroraCheckbox(
                             checked = useSystemTheme,
                             onCheckedChange = {
                                 themesScreenViewModel.handleUseSystemThemeCheckbox()
                             },
-                            colors = CheckboxColors(
-                                checkedCheckmarkColor = MaterialTheme.colorScheme.primary,
-                                uncheckedCheckmarkColor = MaterialTheme.colorScheme.primary,
-                                checkedBoxColor = MaterialTheme.colorScheme.tertiary,
-                                uncheckedBoxColor = MaterialTheme.colorScheme.tertiary,
-                                disabledCheckedBoxColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.8f
-                                ),
-                                disabledUncheckedBoxColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.8f
-                                ),
-                                disabledIndeterminateBoxColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.8f
-                                ),
-                                checkedBorderColor = MaterialTheme.colorScheme.primary,
-                                uncheckedBorderColor = MaterialTheme.colorScheme.primary,
-                                disabledBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                                disabledUncheckedBorderColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.8f
-                                ),
-                                disabledIndeterminateBorderColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.8f
-                                ),
-                            ),
                             modifier = Modifier.weight(0.2f)
                         )
                     }
@@ -115,13 +87,7 @@ fun ThemesScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Card(
-                        shape = CutCornerShape(
-                            topStart = cutCornerRadius,
-                            topEnd = cutCornerRadius,
-                            bottomStart = cutCornerRadius,
-                            bottomEnd = cutCornerRadius
-                        ),
+                    SettingsCard (
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.primary)
                             .weight(0.5f)
@@ -151,13 +117,7 @@ fun ThemesScreen(
                         }
                     }
 
-                    Card(
-                        shape = CutCornerShape(
-                            topStart = cutCornerRadius,
-                            topEnd = cutCornerRadius,
-                            bottomStart = cutCornerRadius,
-                            bottomEnd = cutCornerRadius
-                        ),
+                    SettingsCard(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.primary)
                             .weight(0.5f)

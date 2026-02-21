@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.hich2000.aurora.main.navigation.TopBar
 import com.hich2000.aurora.settings.composables.SettingsCard
+import com.hich2000.aurora.utils.composables.AuroraCheckbox
 
 @Composable
 fun GeneralScreen(
@@ -68,35 +67,11 @@ fun GeneralScreen(
                                 //idk, but centervertically on the row is not doing anything here.
                                 .padding(12.dp)
                         )
-                        Checkbox(
+                        AuroraCheckbox(
                             checked = showAlbumArtPlayerScreen,
                             onCheckedChange = {
                                 generalScreenViewModel.handleShowAlbumArtPlayerScreenCheckbox()
                             },
-                            colors = CheckboxColors(
-                                checkedCheckmarkColor = MaterialTheme.colorScheme.primary,
-                                uncheckedCheckmarkColor = MaterialTheme.colorScheme.primary,
-                                checkedBoxColor = MaterialTheme.colorScheme.tertiary,
-                                uncheckedBoxColor = MaterialTheme.colorScheme.tertiary,
-                                disabledCheckedBoxColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.8f
-                                ),
-                                disabledUncheckedBoxColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.8f
-                                ),
-                                disabledIndeterminateBoxColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.8f
-                                ),
-                                checkedBorderColor = MaterialTheme.colorScheme.primary,
-                                uncheckedBorderColor = MaterialTheme.colorScheme.primary,
-                                disabledBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                                disabledUncheckedBorderColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.8f
-                                ),
-                                disabledIndeterminateBorderColor = MaterialTheme.colorScheme.primary.copy(
-                                    alpha = 0.8f
-                                ),
-                            ),
                             modifier = Modifier.weight(0.2f)
                         )
                     }
