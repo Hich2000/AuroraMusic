@@ -24,8 +24,7 @@ import com.hich2000.aurora.utils.composables.AuroraCheckbox
 fun GeneralScreen(
     generalScreenViewModel: GeneralScreenViewModel = hiltViewModel()
 ) {
-    val showAlbumArtPlayerScreen by generalScreenViewModel.showAlbumArtPlayerScreen.collectAsState()
-    val showAlbumArtNotification by generalScreenViewModel.showAlbumArtNotification.collectAsState()
+    val showAlbumArt by generalScreenViewModel.showAlbumArt.collectAsState()
 
     SettingsScreenScaffold(
         topBarText = "Settings/General",
@@ -41,7 +40,7 @@ fun GeneralScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Show album art on player screen",
+                    text = "Show album art",
                     textAlign = TextAlign.Left,
                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
                     modifier = Modifier
@@ -50,37 +49,9 @@ fun GeneralScreen(
                         .padding(8.dp)
                 )
                 AuroraCheckbox(
-                    checked = showAlbumArtPlayerScreen,
+                    checked = showAlbumArt,
                     onCheckedChange = {
-                        generalScreenViewModel.handleShowAlbumArtPlayerScreenCheckbox()
-                    },
-                    modifier = Modifier.weight(0.2f)
-                )
-            }
-        }
-
-        SettingsCard(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary)
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Show album art on notification",
-                    textAlign = TextAlign.Left,
-                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(0.8f)
-                        .padding(8.dp)
-                )
-                AuroraCheckbox(
-                    checked = showAlbumArtNotification,
-                    onCheckedChange = {
-                        generalScreenViewModel.handleShowAlbumArtNotificationCheckbox()
+                        generalScreenViewModel.handleShowAlbumArtCheckbox()
                     },
                     modifier = Modifier.weight(0.2f)
                 )

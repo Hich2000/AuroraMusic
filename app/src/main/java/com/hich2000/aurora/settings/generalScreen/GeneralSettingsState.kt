@@ -10,23 +10,13 @@ import javax.inject.Singleton
 class GeneralSettingsState @Inject constructor(
     val sharedPreferenceManager: SharedPreferenceManager
 ) {
-    private val _showAlbumArtPlayerScreen: MutableStateFlow<Boolean> = MutableStateFlow(
-        sharedPreferenceManager.getPreference(SharedPreferenceKey.ShowAlbumArtPlayerScreen, defaultValue = true)
+    private val _showAlbumArt: MutableStateFlow<Boolean> = MutableStateFlow(
+        sharedPreferenceManager.getPreference(SharedPreferenceKey.ShowAlbumArt, defaultValue = true)
     )
-    val showAlbumArtPlayerScreen get() = _showAlbumArtPlayerScreen
+    val showAlbumArt get() = _showAlbumArt
 
-    private val _showAlbumArtNotification: MutableStateFlow<Boolean> = MutableStateFlow(
-        sharedPreferenceManager.getPreference(SharedPreferenceKey.ShowAlbumArtNotification, defaultValue = true)
-    )
-    val showAlbumArtNotification get() = _showAlbumArtNotification
-
-    fun setShowAlbumArtPlayerScreen(showAlbumArtPlayerScreen: Boolean) {
-        _showAlbumArtPlayerScreen.value = showAlbumArtPlayerScreen
-        sharedPreferenceManager.savePreference(SharedPreferenceKey.ShowAlbumArtPlayerScreen, showAlbumArtPlayerScreen)
-    }
-
-    fun setShowAlbumArtNotification(showAlbumArtNotification: Boolean) {
-        _showAlbumArtNotification.value = showAlbumArtNotification
-        sharedPreferenceManager.savePreference(SharedPreferenceKey.ShowAlbumArtNotification, showAlbumArtNotification)
+    fun setShowAlbumArt(showAlbumArt: Boolean) {
+        _showAlbumArt.value = showAlbumArt
+        sharedPreferenceManager.savePreference(SharedPreferenceKey.ShowAlbumArt, showAlbumArt)
     }
 }

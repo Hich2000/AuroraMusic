@@ -18,7 +18,7 @@ class PlayerScreenViewModel @Inject constructor(
 ) : ViewModel() {
 
     val playerState: StateFlow<PlayerState> get() = mediaPlayerCoordinator.playerState
-    val showAlbumArt: StateFlow<Boolean> get() = generalSettingsState.showAlbumArtPlayerScreen
+    val showAlbumArt: StateFlow<Boolean> get() = generalSettingsState.showAlbumArt
 
     fun pausePlay() {
         if (playerState.value.isPlaying) {

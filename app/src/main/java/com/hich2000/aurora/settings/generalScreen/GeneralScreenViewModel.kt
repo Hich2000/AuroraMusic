@@ -9,14 +9,9 @@ import javax.inject.Inject
 class GeneralScreenViewModel @Inject constructor(
     val generalSettingsState: GeneralSettingsState
 ): ViewModel() {
-    val showAlbumArtPlayerScreen: StateFlow<Boolean> get() = generalSettingsState.showAlbumArtPlayerScreen
-    val showAlbumArtNotification: StateFlow<Boolean> get() = generalSettingsState.showAlbumArtNotification
+    val showAlbumArt: StateFlow<Boolean> get() = generalSettingsState.showAlbumArt
 
-    fun handleShowAlbumArtPlayerScreenCheckbox() {
-        generalSettingsState.setShowAlbumArtPlayerScreen(!showAlbumArtPlayerScreen.value)
-    }
-
-    fun handleShowAlbumArtNotificationCheckbox() {
-        generalSettingsState.setShowAlbumArtNotification(!showAlbumArtNotification.value)
+    fun handleShowAlbumArtCheckbox() {
+        generalSettingsState.setShowAlbumArt(!showAlbumArt.value)
     }
 }
