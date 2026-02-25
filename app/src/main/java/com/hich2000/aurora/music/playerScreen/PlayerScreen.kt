@@ -1,9 +1,10 @@
 package com.hich2000.aurora.music.playerScreen
 
+
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Label
-import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,9 +35,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.hich2000.aurora.R
 import com.hich2000.aurora.main.navigation.LocalNavController
 import com.hich2000.aurora.main.navigation.Route
 import com.hich2000.aurora.music.playerScreen.controls.Controls
@@ -87,36 +89,25 @@ fun PlayerScreen(
                 ),
             verticalArrangement = Arrangement.Center
         ) {
-            var albumArt by remember { mutableStateOf<Bitmap?>(null) }
-            LaunchedEffect(playerState) {
-                albumArt = playerScreenViewModel.getAlbumArt()
+            val standardAlbum = BitmapFactory.decodeResource(
+                LocalResources.current,
+                R.drawable.standard_album
+            )
+            var albumArt by remember { mutableStateOf<Bitmap>(standardAlbum) }
+            if (showAlbumArt) {
+                LaunchedEffect(playerState) {
+                    albumArt = playerScreenViewModel.getAlbumArt() ?: standardAlbum
+                }
             }
 
-            if (albumArt == null || !showAlbumArt) {
-                IconButton(
-                    onClick = {},
-                    enabled = false,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.6f)
-                        .background(MaterialTheme.colorScheme.tertiary)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.MusicNote,
-                        contentDescription = "icon",
-                        tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            } else {
-                Image(
-                    bitmap = albumArt!!.asImageBitmap(),
-                    contentDescription = "Album Art",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.6f)
-                )
-            }
+            Image(
+                bitmap = albumArt.asImageBitmap(),
+                contentDescription = "Album Art",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.6f)
+            )
+
             Text(
                 text = playerState.currentSong,
                 textAlign = TextAlign.Center,
