@@ -112,6 +112,9 @@ dependencies {
 
     //documentfile
     implementation(libs.androidx.documentfile)
+
+    //pallet
+    implementation(libs.androidx.palette.ktx)
 }
 
 // Configure KAPT for Hilt
