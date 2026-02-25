@@ -7,9 +7,9 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,8 +33,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -60,6 +69,17 @@ fun PlayerScreen(
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
 
+    val standardAlbum = BitmapFactory.decodeResource(
+        LocalResources.current,
+        R.drawable.standard_album
+    )
+    var albumArt by remember { mutableStateOf<Bitmap>(standardAlbum) }
+    if (showAlbumArt) {
+        LaunchedEffect(playerState) {
+            albumArt = playerScreenViewModel.getAlbumArt() ?: standardAlbum
+        }
+    }
+
     BackHandler(enabled = bottomSheetState.bottomSheetState.currentValue == SheetValue.Expanded) {
         scope.launch {
             bottomSheetState.bottomSheetState.partialExpand()
@@ -78,35 +98,61 @@ fun PlayerScreen(
             bottomEnd = 0.dp
         )
     ) { innerPadding ->
+
+        Box(
+            modifier = Modifier
+
+                .fillMaxSize()
+        ) {
+            //blurred background
+            Image(
+                bitmap = albumArt.asImageBitmap(),
+                contentDescription = "Fade",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .matchParentSize()
+                    .blur(120.dp)
+                    .graphicsLayer {
+                        compositingStrategy = CompositingStrategy.Offscreen
+                    }
+                    .drawWithContent {
+                        drawContent()
+
+                        drawRect(
+                            brush = Brush.radialGradient(
+                                colors = listOf(
+                                    Color.Black,
+                                    Color.Transparent
+                                ),
+                                center = center,
+                                radius = size.maxDimension * 5f
+                            ),
+                            blendMode = BlendMode.DstIn
+                        )
+                    }
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
                     top = innerPadding.calculateTopPadding(),
-                    bottom = innerPadding.calculateBottomPadding(),
-                    start = 16.dp,
-                    end = 16.dp
+                    bottom = innerPadding.calculateBottomPadding()
                 ),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
         ) {
-            val standardAlbum = BitmapFactory.decodeResource(
-                LocalResources.current,
-                R.drawable.standard_album
-            )
-            var albumArt by remember { mutableStateOf<Bitmap>(standardAlbum) }
-            if (showAlbumArt) {
-                LaunchedEffect(playerState) {
-                    albumArt = playerScreenViewModel.getAlbumArt() ?: standardAlbum
-                }
-            }
-
+            //actual album art
             Image(
                 bitmap = albumArt.asImageBitmap(),
                 contentDescription = "Album Art",
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.6f)
+                    .weight(1f)
+                    .fillMaxSize()
             )
+
 
             Text(
                 text = playerState.currentSong,
