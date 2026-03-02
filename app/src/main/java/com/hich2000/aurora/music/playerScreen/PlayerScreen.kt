@@ -36,10 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
@@ -98,41 +94,6 @@ fun PlayerScreen(
             bottomEnd = 0.dp
         )
     ) { innerPadding ->
-
-        Box(
-            modifier = Modifier
-
-                .fillMaxSize()
-        ) {
-            //blurred background
-            Image(
-                bitmap = albumArt.asImageBitmap(),
-                contentDescription = "Fade",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .matchParentSize()
-                    .blur(120.dp)
-                    .graphicsLayer {
-                        compositingStrategy = CompositingStrategy.Offscreen
-                    }
-                    .drawWithContent {
-                        drawContent()
-
-                        drawRect(
-                            brush = Brush.radialGradient(
-                                colors = listOf(
-                                    Color.Black,
-                                    Color.Transparent
-                                ),
-                                center = center,
-                                radius = size.maxDimension * 5f
-                            ),
-                            blendMode = BlendMode.DstIn
-                        )
-                    }
-            )
-        }
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -143,16 +104,40 @@ fun PlayerScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ) {
-            //actual album art
-            Image(
-                bitmap = albumArt.asImageBitmap(),
-                contentDescription = "Album Art",
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize()
-            )
 
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                //blurred background
+                Image(
+                    bitmap = albumArt.asImageBitmap(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            scaleX = 1f
+                            scaleY = 0.9f
+                            compositingStrategy = CompositingStrategy.Offscreen
+                        }
+                        .blur(10.dp)
+                )
+
+                //actual album art
+                Image(
+                    bitmap = albumArt.asImageBitmap(),
+                    contentDescription = "Album Art",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .fillMaxSize(0.9f)
+                        .graphicsLayer(
+                            compositingStrategy = CompositingStrategy.Offscreen
+                        )
+                )
+            }
 
             Text(
                 text = playerState.currentSong,
