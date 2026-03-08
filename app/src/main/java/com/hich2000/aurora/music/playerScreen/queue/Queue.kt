@@ -9,7 +9,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -17,7 +16,6 @@ import androidx.compose.material.icons.filled.Queue
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,28 +46,13 @@ fun Queue(
     val queue by queueViewModel.currentQueue.collectAsState()
     val playerState by queueViewModel.playerState.collectAsState()
 
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate(Route.Player.QueueBuilder.route)
-                },
-                shape = RectangleShape,
-                containerColor = MaterialTheme.colorScheme.background,
-                modifier = Modifier.border(2.dp, MaterialTheme.colorScheme.tertiary)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Queue,
-                    contentDescription = "filter queue",
-                    tint = MaterialTheme.colorScheme.secondary
-                )
-            }
-        },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
-    ) { innerPadding ->
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
         SongList(
             songList = queue,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.fillMaxSize()
         ) { song ->
             if (playerState.currentSong == song.title) {
                 Box(
@@ -96,7 +79,7 @@ fun Queue(
                     val phase = remember { Animatable(0f) }
                     val scope = rememberCoroutineScope()
 
-                    LaunchedEffect(playerState.isPlaying,) {
+                    LaunchedEffect(playerState.isPlaying) {
                         if (playerState.isPlaying) {
                             scope.launch {
                                 while (true) {
@@ -121,8 +104,8 @@ fun Queue(
                     ) {
                         val wavePath = Path()
                         val amplitude = 25f
-                        val baseline = size.height+150f
-                        val waveCenter = size.height+50f
+                        val baseline = size.height + 150f
+                        val waveCenter = size.height + 50f
 
                         wavePath.moveTo(0f, baseline)
                         for (x in 0..size.width.toInt()) {
@@ -151,6 +134,24 @@ fun Queue(
                     onClick = { queueViewModel.seek(song) }
                 )
             }
+        }
+
+        FloatingActionButton(
+            onClick = {
+                navController.navigate(Route.Player.QueueBuilder.route)
+            },
+            shape = RectangleShape,
+            containerColor = MaterialTheme.colorScheme.background,
+            modifier = Modifier
+                .padding(16.dp)
+                .border(2.dp, MaterialTheme.colorScheme.tertiary)
+                .align(Alignment.BottomEnd)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Queue,
+                contentDescription = "filter queue",
+                tint = MaterialTheme.colorScheme.secondary
+            )
         }
     }
 }

@@ -80,7 +80,13 @@ fun PlayerScreen(
 
     BottomSheetScaffold(
         scaffoldState = bottomSheetState,
-        sheetContent = { Queue() },
+        sheetContent = {
+            if (bottomSheetState.bottomSheetState.isVisible) {
+                Queue()
+            } else {
+                Box(modifier = Modifier.fillMaxSize())
+            }
+        },
         sheetPeekHeight = 48.dp,
         sheetContainerColor = MaterialTheme.colorScheme.tertiary,
         sheetShape = CutCornerShape(
