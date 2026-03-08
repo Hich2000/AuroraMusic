@@ -29,7 +29,6 @@ fun MainNavScaffold() {
     val navController = rememberNavController()
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentNavBackStackEntry?.destination?.route
-    val slideSpeed = 200
 
     Scaffold(
         modifier = Modifier
@@ -58,25 +57,25 @@ fun MainNavScaffold() {
                 enterTransition = {
                     slideIntoContainer(
                         getSlideDirection(initialState, targetState),
-                        tween(slideSpeed)
+                        tween(navigationSlideSpeed)
                     )
                 },
                 exitTransition = {
                     slideOutOfContainer(
                         getSlideDirection(initialState, targetState),
-                        tween(slideSpeed)
+                        tween(navigationSlideSpeed)
                     )
                 },
                 popEnterTransition = {
                     slideIntoContainer(
                         getSlideDirection(initialState, targetState),
-                        tween(slideSpeed)
+                        tween(navigationSlideSpeed)
                     )
                 },
                 popExitTransition = {
                     slideOutOfContainer(
                         getSlideDirection(initialState, targetState),
-                        tween(slideSpeed)
+                        tween(navigationSlideSpeed)
                     )
                 }
             ) {

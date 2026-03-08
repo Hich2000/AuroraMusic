@@ -6,10 +6,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -17,7 +15,6 @@ import androidx.compose.material.icons.filled.Queue
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,71 +45,58 @@ fun Queue(
     val queue by queueViewModel.currentQueue.collectAsState()
     val playerState by queueViewModel.playerState.collectAsState()
 
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate(Route.Player.QueueBuilder.route)
-                },
-                shape = RectangleShape,
-                containerColor = MaterialTheme.colorScheme.background,
-                modifier = Modifier.border(2.dp, MaterialTheme.colorScheme.tertiary)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Queue,
-                    contentDescription = "filter queue",
-                    tint = MaterialTheme.colorScheme.secondary
-                )
+    val waveColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
+    val phase = remember { Animatable(0f) }
+    val scope = rememberCoroutineScope()
+    val twoPi = (2 * Math.PI).toFloat()
+    val soundWavePainter = painterResource(R.drawable.soundwave)
+
+    LaunchedEffect(playerState.isPlaying) {
+        if (playerState.isPlaying) {
+            scope.launch {
+                while (true) {
+                    phase.animateTo(
+                        targetValue = twoPi,
+                        animationSpec = tween(
+                            durationMillis = 2000,
+                            easing = LinearEasing
+                        )
+                    )
+                    phase.snapTo(0f)
+                }
             }
-        },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
-    ) { innerPadding ->
+        } else {
+            phase.stop()
+        }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
         SongList(
             songList = queue,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.fillMaxSize()
         ) { song ->
-            if (playerState.currentSong == song.title) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                ) {
-                    SongCard(
-                        song = song,
-                        onClick = { queueViewModel.seek(song) }
-                    )
+            Box(
+                contentAlignment = Alignment.Center,
+            ) {
+                SongCard(
+                    song = song,
+                    onClick = { queueViewModel.seek(song) }
+                )
+
+                if (playerState.currentSong == song.title) {
                     Row(
-                        horizontalArrangement = Arrangement.End,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.align(Alignment.CenterEnd)
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.soundwave),
+                            painter = soundWavePainter,
                             contentDescription = "Sound wave",
+                            tint = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier
                                 .padding(end = 8.dp)
                                 .background(MaterialTheme.colorScheme.primary)
                         )
-                    }
-
-                    val waveColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
-                    val phase = remember { Animatable(0f) }
-                    val scope = rememberCoroutineScope()
-
-                    LaunchedEffect(playerState.isPlaying,) {
-                        if (playerState.isPlaying) {
-                            scope.launch {
-                                while (true) {
-                                    phase.animateTo(
-                                        targetValue = (2 * Math.PI).toFloat(),
-                                        animationSpec = tween(
-                                            durationMillis = 2000,
-                                            easing = LinearEasing
-                                        )
-                                    )
-                                    phase.snapTo(0f)
-                                }
-                            }
-                        } else {
-                            phase.stop()
-                        }
                     }
 
                     Canvas(
@@ -121,13 +105,13 @@ fun Queue(
                     ) {
                         val wavePath = Path()
                         val amplitude = 25f
-                        val baseline = size.height+150f
-                        val waveCenter = size.height+50f
+                        val baseline = size.height + 150f
+                        val waveCenter = size.height + 50f
 
                         wavePath.moveTo(0f, baseline)
                         for (x in 0..size.width.toInt()) {
-                            val radians = (x / size.width) * (2 * Math.PI) + phase.value
-                            val y = waveCenter + amplitude * sin(radians).toFloat()
+                            val radians = (x / size.width) * twoPi + phase.value
+                            val y = waveCenter + amplitude * sin(radians)
                             wavePath.lineTo(x.toFloat(), y)
                         }
 
@@ -145,12 +129,25 @@ fun Queue(
                         )
                     }
                 }
-            } else {
-                SongCard(
-                    song = song,
-                    onClick = { queueViewModel.seek(song) }
-                )
             }
+        }
+
+        FloatingActionButton(
+            onClick = {
+                navController.navigate(Route.Player.QueueBuilder.route)
+            },
+            shape = RectangleShape,
+            containerColor = MaterialTheme.colorScheme.background,
+            modifier = Modifier
+                .padding(16.dp)
+                .border(2.dp, MaterialTheme.colorScheme.tertiary)
+                .align(Alignment.BottomEnd)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Queue,
+                contentDescription = "filter queue",
+                tint = MaterialTheme.colorScheme.secondary
+            )
         }
     }
 }
