@@ -2,9 +2,9 @@ package com.hich2000.aurora.music.playerScreen
 
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Label
+import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -40,11 +41,9 @@ import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.hich2000.aurora.R
 import com.hich2000.aurora.main.navigation.LocalNavController
 import com.hich2000.aurora.main.navigation.Route
 import com.hich2000.aurora.music.playerScreen.controls.Controls
@@ -66,14 +65,10 @@ fun PlayerScreen(
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
 
-    val standardAlbum = BitmapFactory.decodeResource(
-        LocalResources.current,
-        R.drawable.standard_album
-    )
-    var albumArt by remember { mutableStateOf<Bitmap>(standardAlbum) }
+    var albumArt by remember { mutableStateOf<Bitmap?>(null) }
     if (showAlbumArt) {
         LaunchedEffect(playerState) {
-            albumArt = playerScreenViewModel.getAlbumArt() ?: standardAlbum
+            albumArt = playerScreenViewModel.getAlbumArt()
         }
     }
 
@@ -113,9 +108,9 @@ fun PlayerScreen(
                     .weight(1f)
             ) {
                 //blurred background
-                if (playerScreenAmbience) {
+                if (playerScreenAmbience && albumArt !== null) {
                     Image(
-                        bitmap = albumArt.asImageBitmap(),
+                        bitmap = albumArt!!.asImageBitmap(),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -129,17 +124,34 @@ fun PlayerScreen(
                     )
                 }
 
-                //actual album art
-                Image(
-                    bitmap = albumArt.asImageBitmap(),
-                    contentDescription = "Album Art",
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .fillMaxSize(0.9f)
-                        .graphicsLayer(
-                            compositingStrategy = CompositingStrategy.Offscreen
+                if (albumArt == null) {
+                    IconButton(
+                        onClick = {},
+                        enabled = false,
+                        modifier = Modifier
+                            .fillMaxSize(0.9f)
+                            .background(MaterialTheme.colorScheme.tertiary)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.MusicNote,
+                            contentDescription = "icon",
+                            tint = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.fillMaxSize()
                         )
-                )
+                    }
+                } else {
+                    //actual album art
+                    Image(
+                        bitmap = albumArt!!.asImageBitmap(),
+                        contentDescription = "Album Art",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .fillMaxSize(0.9f)
+                            .graphicsLayer(
+                                compositingStrategy = CompositingStrategy.Offscreen
+                            )
+                    )
+                }
             }
 
             Text(
