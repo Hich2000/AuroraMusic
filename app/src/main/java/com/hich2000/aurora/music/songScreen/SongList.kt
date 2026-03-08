@@ -16,7 +16,9 @@ fun SongList(
         modifier = modifier
     ) {
         items(
-            items = songList, key = { song -> song.id }) { song ->
+            items = songList,
+            key = { song -> song.id }
+        ) { song ->
             songCard(song)
         }
     }
