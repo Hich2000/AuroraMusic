@@ -44,6 +44,7 @@ class SharedPreferenceManager @Inject constructor(
                 is SharedPreferenceKey.SelectedTheme -> putString(key.key, value.toString())
                 is SharedPreferenceKey.UseSystemTheme -> putBoolean(key.key, value as Boolean)
                 is SharedPreferenceKey.ShowAlbumArt -> putBoolean(key.key, value as Boolean)
+                is SharedPreferenceKey.PlayerScreenAmbience -> putBoolean(key.key, value as Boolean)
             }
         }
     }
@@ -87,6 +88,7 @@ class SharedPreferenceManager @Inject constructor(
             is SharedPreferenceKey.SelectedTheme -> SelectableThemes.valueOf(sharedPreferences.getString(key.key, defaultValue.toString()).toString()) as T
             is SharedPreferenceKey.UseSystemTheme -> sharedPreferences.getBoolean(key.key, defaultValue as Boolean) as T
             is SharedPreferenceKey.ShowAlbumArt -> sharedPreferences.getBoolean(key.key, defaultValue as Boolean) as T
+            is SharedPreferenceKey.PlayerScreenAmbience -> sharedPreferences.getBoolean(key.key, defaultValue as Boolean) as T
         }
     }
 }

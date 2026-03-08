@@ -15,8 +15,18 @@ class GeneralSettingsState @Inject constructor(
     )
     val showAlbumArt get() = _showAlbumArt
 
+    private val _playerScreenAmbience: MutableStateFlow<Boolean> = MutableStateFlow(
+        sharedPreferenceManager.getPreference(SharedPreferenceKey.PlayerScreenAmbience, defaultValue = true)
+    )
+    val playerScreenAmbience get() = _playerScreenAmbience
+
     fun setShowAlbumArt(showAlbumArt: Boolean) {
         _showAlbumArt.value = showAlbumArt
         sharedPreferenceManager.savePreference(SharedPreferenceKey.ShowAlbumArt, showAlbumArt)
+    }
+
+    fun setPlayerScreenAmbience(playerScreenAmbience: Boolean) {
+        _playerScreenAmbience.value = playerScreenAmbience
+        sharedPreferenceManager.savePreference(SharedPreferenceKey.PlayerScreenAmbience, playerScreenAmbience)
     }
 }

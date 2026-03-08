@@ -25,6 +25,7 @@ fun GeneralScreen(
     generalScreenViewModel: GeneralScreenViewModel = hiltViewModel()
 ) {
     val showAlbumArt by generalScreenViewModel.showAlbumArt.collectAsState()
+    val playerScreenAmbience by generalScreenViewModel.playerScreenAmbience.collectAsState()
 
     SettingsScreenScaffold(
         topBarText = "Settings/General",
@@ -52,6 +53,34 @@ fun GeneralScreen(
                     checked = showAlbumArt,
                     onCheckedChange = {
                         generalScreenViewModel.handleShowAlbumArtCheckbox()
+                    },
+                    modifier = Modifier.weight(0.2f)
+                )
+            }
+        }
+
+        SettingsCard(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.primary)
+                .fillMaxWidth()
+                .height(50.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Player screen ambience",
+                    textAlign = TextAlign.Left,
+                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(0.8f)
+                        .padding(8.dp)
+                )
+                AuroraCheckbox(
+                    checked = playerScreenAmbience,
+                    onCheckedChange = {
+                        generalScreenViewModel.handlePlayerScreenAmbienceCheckbox()
                     },
                     modifier = Modifier.weight(0.2f)
                 )
