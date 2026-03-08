@@ -60,6 +60,7 @@ fun PlayerScreen(
     val navController = LocalNavController.current
     val playerState by playerScreenViewModel.playerState.collectAsState()
     val showAlbumArt by playerScreenViewModel.showAlbumArt.collectAsState()
+    val playerScreenAmbience by playerScreenViewModel.playerScreenAmbience.collectAsState()
     var isUserInteracting by remember { mutableStateOf(false) }
     var tempSliderPosition by remember { mutableFloatStateOf(0F) }
     val bottomSheetState = rememberBottomSheetScaffoldState()
@@ -112,19 +113,21 @@ fun PlayerScreen(
                     .weight(1f)
             ) {
                 //blurred background
-                Image(
-                    bitmap = albumArt.asImageBitmap(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .graphicsLayer {
-                            scaleX = 1f
-                            scaleY = 0.9f
-                            compositingStrategy = CompositingStrategy.Offscreen
-                        }
-                        .blur(10.dp)
-                )
+                if (playerScreenAmbience) {
+                    Image(
+                        bitmap = albumArt.asImageBitmap(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .graphicsLayer {
+                                scaleX = 1f
+                                scaleY = 0.9f
+                                compositingStrategy = CompositingStrategy.Offscreen
+                            }
+                            .blur(10.dp)
+                    )
+                }
 
                 //actual album art
                 Image(
