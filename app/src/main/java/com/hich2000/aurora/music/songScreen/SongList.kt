@@ -2,6 +2,7 @@ package com.hich2000.aurora.music.songScreen
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.hich2000.aurora.music.queueManager.Song
@@ -12,12 +13,15 @@ fun SongList(
     songList: List<Song> = emptyList(),
     songCard: @Composable (song: Song) -> Unit,
 ) {
+    val listState = rememberLazyListState()
+
     LazyColumn(
-        modifier = modifier
+        modifier = modifier,
+        state = listState
     ) {
         items(
             items = songList,
-            key = { song -> song.id }
+            key = { it.id }
         ) { song ->
             songCard(song)
         }

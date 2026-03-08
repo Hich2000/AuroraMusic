@@ -28,6 +28,7 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -65,6 +66,10 @@ fun PlayerScreen(
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val scope = rememberCoroutineScope()
 
+    val showQueue by remember {
+        derivedStateOf { bottomSheetState.bottomSheetState.isVisible }
+    }
+
     var albumArt by remember { mutableStateOf<Bitmap?>(null) }
     if (showAlbumArt) {
         LaunchedEffect(playerState) {
@@ -81,7 +86,7 @@ fun PlayerScreen(
     BottomSheetScaffold(
         scaffoldState = bottomSheetState,
         sheetContent = {
-            if (bottomSheetState.bottomSheetState.isVisible) {
+            if (showQueue) {
                 Queue()
             } else {
                 Box(modifier = Modifier.fillMaxSize())

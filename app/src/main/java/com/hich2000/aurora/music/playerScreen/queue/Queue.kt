@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,6 +45,30 @@ fun Queue(
     val queue by queueViewModel.currentQueue.collectAsState()
     val playerState by queueViewModel.playerState.collectAsState()
 
+    val waveColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
+    val phase = remember { Animatable(0f) }
+    val scope = rememberCoroutineScope()
+    val twoPi = (2 * Math.PI).toFloat()
+    val soundWavePainter = painterResource(R.drawable.soundwave)
+
+    LaunchedEffect(playerState.isPlaying) {
+        if (playerState.isPlaying) {
+            scope.launch {
+                while (true) {
+                    phase.animateTo(
+                        targetValue = (2 * Math.PI).toFloat(),
+                        animationSpec = tween(
+                            durationMillis = 2000,
+                            easing = LinearEasing
+                        )
+                    )
+                    phase.snapTo(0f)
+                }
+            }
+        } else {
+            phase.stop()
+        }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -54,48 +77,26 @@ fun Queue(
             songList = queue,
             modifier = Modifier.fillMaxSize()
         ) { song ->
-            if (playerState.currentSong == song.title) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                ) {
-                    SongCard(
-                        song = song,
-                        onClick = { queueViewModel.seek(song) }
-                    )
+            Box(
+                contentAlignment = Alignment.Center,
+            ) {
+                SongCard(
+                    song = song,
+                    onClick = { queueViewModel.seek(song) }
+                )
+
+                if (playerState.currentSong == song.title) {
                     Row(
-                        horizontalArrangement = Arrangement.End,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.align(Alignment.CenterEnd)
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.soundwave),
+                            painter = soundWavePainter,
                             contentDescription = "Sound wave",
+                            tint = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier
                                 .padding(end = 8.dp)
                                 .background(MaterialTheme.colorScheme.primary)
                         )
-                    }
-
-                    val waveColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f)
-                    val phase = remember { Animatable(0f) }
-                    val scope = rememberCoroutineScope()
-
-                    LaunchedEffect(playerState.isPlaying) {
-                        if (playerState.isPlaying) {
-                            scope.launch {
-                                while (true) {
-                                    phase.animateTo(
-                                        targetValue = (2 * Math.PI).toFloat(),
-                                        animationSpec = tween(
-                                            durationMillis = 2000,
-                                            easing = LinearEasing
-                                        )
-                                    )
-                                    phase.snapTo(0f)
-                                }
-                            }
-                        } else {
-                            phase.stop()
-                        }
                     }
 
                     Canvas(
@@ -109,8 +110,8 @@ fun Queue(
 
                         wavePath.moveTo(0f, baseline)
                         for (x in 0..size.width.toInt()) {
-                            val radians = (x / size.width) * (2 * Math.PI) + phase.value
-                            val y = waveCenter + amplitude * sin(radians).toFloat()
+                            val radians = (x / size.width) * twoPi + phase.value
+                            val y = waveCenter + amplitude * sin(radians)
                             wavePath.lineTo(x.toFloat(), y)
                         }
 
@@ -128,11 +129,6 @@ fun Queue(
                         )
                     }
                 }
-            } else {
-                SongCard(
-                    song = song,
-                    onClick = { queueViewModel.seek(song) }
-                )
             }
         }
 
