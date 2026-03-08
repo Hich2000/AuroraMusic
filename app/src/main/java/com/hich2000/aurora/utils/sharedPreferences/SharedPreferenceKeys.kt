@@ -16,4 +16,6 @@ sealed class SharedPreferenceKey<T>(
     data object FoldersToScan : SharedPreferenceKey<List<String>>("FOLDERS_TO_SCAN")
     data object UseSystemTheme : SharedPreferenceKey<Boolean>("USE_SYSTEM_THEME")
     data object SelectedTheme : SharedPreferenceKey<SelectableThemes>("SELECTED_THEME")
+    data object ShowAlbumArt : SharedPreferenceKey<Boolean>("SHOW_ALBUM_ART")
+    data object PlayerScreenAmbience : SharedPreferenceKey<Boolean>("PLAYER_SCREEN_AMBIENCE")
 }

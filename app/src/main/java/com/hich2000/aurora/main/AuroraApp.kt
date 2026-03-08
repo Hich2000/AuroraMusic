@@ -17,6 +17,7 @@ import com.hich2000.aurora.main.navigation.Route
 import com.hich2000.aurora.music.playerScreen.queue.QueueBuilder
 import com.hich2000.aurora.music.songScreen.songTagScreen.SongTagScreen
 import com.hich2000.aurora.settings.folderScreen.FolderScreen
+import com.hich2000.aurora.settings.generalScreen.GeneralScreen
 import com.hich2000.aurora.settings.themesScreen.ThemesScreen
 import com.hich2000.aurora.tagsAndCategories.tags.tagScreen.TagSongScreen
 import com.hich2000.aurora.utils.ToastEventBus
@@ -93,6 +94,11 @@ fun AuroraApp() {
             ) { backStackEntry ->
                 val tagId = backStackEntry.arguments?.getLong("tagId") ?: 0L
                 TagSongScreen(tagId)
+            }
+            composable(
+                route = Route.Settings.General.route
+            ) {
+                GeneralScreen()
             }
             composable(
                 route = Route.Settings.Folders.route
