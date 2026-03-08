@@ -56,7 +56,7 @@ fun Queue(
             scope.launch {
                 while (true) {
                     phase.animateTo(
-                        targetValue = (2 * Math.PI).toFloat(),
+                        targetValue = twoPi,
                         animationSpec = tween(
                             durationMillis = 2000,
                             easing = LinearEasing
