@@ -22,11 +22,12 @@ import com.hich2000.aurora.settings.themesScreen.ThemesScreen
 import com.hich2000.aurora.tagsAndCategories.tags.tagScreen.TagSongScreen
 import com.hich2000.aurora.utils.ToastEventBus
 
+const val navigationSlideSpeed = 300
+
 @Composable
 fun AuroraApp() {
     val rootNavController = rememberNavController()
     val context = LocalContext.current
-    val slideSpeed = 250
 
     LaunchedEffect(Unit) {
         ToastEventBus.toastFlow.collect { message ->
@@ -42,25 +43,25 @@ fun AuroraApp() {
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Up,
-                    tween(slideSpeed)
+                    tween(navigationSlideSpeed)
                 )
             },
             exitTransition = {
                 slideOutOfContainer(
                     AnimatedContentTransitionScope.SlideDirection.Up,
-                    tween(slideSpeed)
+                    tween(navigationSlideSpeed)
                 )
             },
             popEnterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Down,
-                    tween(slideSpeed)
+                    tween(navigationSlideSpeed)
                 )
             },
             popExitTransition = {
                 slideOutOfContainer(
                     AnimatedContentTransitionScope.SlideDirection.Down,
-                    tween(slideSpeed)
+                    tween(navigationSlideSpeed)
                 )
             }
         ) {
